@@ -1,6 +1,5 @@
 import Book from "@/components/home/book";
 import prisma from "@/lib/prisma";
-import Image from "next/image";
 
 export default async function Home() {
   const books = await prisma.book.findMany();

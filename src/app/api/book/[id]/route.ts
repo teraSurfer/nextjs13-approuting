@@ -24,3 +24,28 @@ export async function GET(request: Request) {
         })
     }
 }
+
+export async function DELETE(request: Request) {
+    const {pathname} = new URL(request.url);
+    const [_, api, book, bookId] = pathname.split('/');
+
+    try {
+        await prisma.book.delete({
+            where: {
+                id: Number(bookId)
+            }
+        })
+
+        
+        return NextResponse.json({book}, {
+            status: 200,
+        });
+    } catch(err) {
+        return NextResponse.json({
+            error: 'No book found for ID: ' + bookId
+        }, {
+            status: 404,
+            statusText: 'No such book'
+        })
+    }
+}

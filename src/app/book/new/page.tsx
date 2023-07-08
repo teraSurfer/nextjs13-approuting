@@ -1,14 +1,15 @@
 "use client";
 import React, { useReducer } from "react";
+import {useRouter} from "next/navigation";
 
 interface CreateBookFormState {
-  name: String;
-  isbn: String;
-  authorId: Number;
-  description: String;
-  status: String;
-  price: Number;
-  previewImage: String;
+  name: String | null;
+  isbn: String | null;
+  authorId: Number | null;
+  description: String | null;
+  status: String | null;
+  price: Number | null;
+  previewImage: String | null;
 }
 
 const initialState: CreateBookFormState = {
@@ -21,7 +22,7 @@ const initialState: CreateBookFormState = {
   previewImage: "",
 };
 
-type CreateBookFormAction = {
+export type CreateBookFormAction = {
   type:
     | "UPDATE_NAME"
     | "UPDATE_ISBN"
@@ -33,7 +34,7 @@ type CreateBookFormAction = {
   payload: string;
 };
 
-const createBookReducer = (
+export const createBookReducer = (
   state: CreateBookFormState,
   action: CreateBookFormAction
 ): CreateBookFormState => {
@@ -80,6 +81,7 @@ const createBookReducer = (
 
 export default function CreateBook() {
   const [state, dispatch] = useReducer(createBookReducer, initialState);
+  const { push } = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +89,8 @@ export default function CreateBook() {
 			body: JSON.stringify(state),
 			method: 'POST'
 		});
+
+    push('/');
   };
   return (
     <div className="container mx-auto">

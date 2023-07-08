@@ -25,6 +25,27 @@ export async function GET(request: Request) {
     }
 }
 
+export async function PUT(request: Request) {
+    const {pathname} = new URL(request.url);
+    const [_, api, bookString, bookId] = pathname.split('/');
+
+    const book = await request.json();
+
+    console.log(book);
+
+    await prisma.book.update({
+        where: {
+            id: Number(bookId)
+        },
+        data: {
+            ...book
+        }
+    });
+    return NextResponse.json({
+        ...book,
+    }, {status: 200});
+}
+
 export async function DELETE(request: Request) {
     const {pathname} = new URL(request.url);
     const [_, api, book, bookId] = pathname.split('/');
